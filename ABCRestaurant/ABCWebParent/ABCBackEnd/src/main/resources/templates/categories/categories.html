@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head th:replace="fragments :: page_head('Categories - Shopme Admin', 'none')"/>
+
+<body>
+<div class="container-fluid">
+    <div>
+        <nav class="navbar navbar-expand-lg bg-dark navbar-dark">
+            <a class="navbar-brand" th:href="@{/}">
+                <img th:src="@{/images/ABC_Restaurant_transparent_3.png}" style="height: 40px; width: auto;"/>
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#topNavbar">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="topNavbar">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/users}">Users</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/categories}">Categories</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/brands}">Brands</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/products}">Products</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/customers}">Customers</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/shipping}">Shipping</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/orders}">Orders</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/report}">Sales Report</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/articles}">Articles</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/menus}">Menus</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/settings}">Settings</a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+
+    <h2>Manage Categories</h2>
+
+    <a th:href="@{/categories/new}" class="fas fa-folder-plus fa-2x icon-dark mr-2"></a>
+    <a th:href="@{/categories/export/csv}" class="fas fa-file-csv fa-2x icon-dark mr-2"></a>
+
+    <div>
+        <form th:action="@{/categories/page/1}" class="form-inline m-3">
+            Filter: &nbsp;
+            <input type="search" name="keyword" th:value="${keyword}" class="form-control" required/>
+            &nbsp;&nbsp;
+            <button type="submit" class="btn btn-primary">
+                <i class="fas fa-search"></i>
+            </button>
+            &nbsp;&nbsp;
+            <button type="button" class="btn btn-secondary" onclick="clearFilter()">
+                <i class="fas fa-eraser"></i>
+            </button>
+        </form>
+    </div>
+
+    <div class="full-details">
+        <table class="table table-bordered table-striped table-hover table-responsive-xl">
+            <thead class="thead-dark">
+            <tr>
+                <th>ID</th>
+                <th>Category Image</th>
+                <th>Category Name</th>
+                <th>Alias</th>
+                <th>Enabled</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="cat: ${listCategories}">
+                <!--        <td>[[${cat.id}]]</td>-->
+                <!--        <td></td>-->
+                <!--        <td>[[${cat.name}]]</td>-->
+                <!--        <td>[[${cat.alias}]]</td>-->
+                <!--        <td>[[${cat.image}]]</td>-->
+                <!--        <td>-->
+                <!--          <div th:replace="fragments :: category_status"></div>-->
+                <!--        </td>-->
+                <!--        <td>-->
+                <!--          <div th:replace="fragments :: category_actions"></div>-->
+                <!--        </td>-->
+
+                <td th:text="${cat.id}"></td>
+                <td><img th:if="${cat.image}" th:src="@{'/images/categories/' + ${cat.image}}"
+                         style="height:50px; width:auto;" alt="Category Image"></td>
+                <td th:text="${cat.name}"></td>
+                <td th:text="${cat.alias}"></td>
+                <td th:text="${cat.enabled ? 'Enabled' : 'Disabled'}"></td>
+                <td>
+                    <a th:href="@{'/categories/edit/' + ${cat.id}}" class="btn btn-primary"><i class="fas fa-edit"></i>
+                        Edit</a>
+                    <a th:href="@{'/categories/delete/' + ${cat.id}}" class="btn btn-danger"><i
+                            class="fas fa-trash-alt"></i> Delete</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="text-center">
+        <p>ABC Control Panel - Copyright &copy; ABC</p>
+    </div>
+
+</div>
+</body>
+</html>

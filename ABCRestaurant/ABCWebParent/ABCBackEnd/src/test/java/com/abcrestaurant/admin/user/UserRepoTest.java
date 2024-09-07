@@ -9,8 +9,6 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.test.annotation.Rollback;
 
-import java.util.Optional;
-
 import static org.assertj.core.api.Assertions.assertThat;
 
 @DataJpaTest
@@ -98,7 +96,7 @@ public class UserRepoTest {
     }
 
     @Test
-    public void testCountById(){
+    public void testCountById() {
         Integer id = 1;
         Long countById = userRepo.countById(id);
 
