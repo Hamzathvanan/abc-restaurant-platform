@@ -64,4 +64,10 @@ public class Category {
     public int hashCode() {
         return Objects.hash(id); // Use id only to avoid recursion
     }
+
+    @Transient
+    public String getPhotosImagePath() {
+        if (id == null || image == null) return "/images/default-cat.png";
+        return "/images/category-images/" + this.id + "/" + this.image;
+    }
 }
