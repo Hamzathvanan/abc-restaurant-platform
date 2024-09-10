@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign Up - ABC Restaurant</title>
+  <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+</head>
+<body>
+<div class="container">
+  <h2>Sign Up</h2>
+  <form th:action="@{/signup/save}" method="post" class="form">
+    <div class="form-group">
+      <label for="firstName">First Name</label>
+      <input type="text" id="firstName" class="form-control" name="firstName" required>
+    </div>
+    <div class="form-group">
+      <label for="lastName">Last Name</label>
+      <input type="text" id="lastName" class="form-control" name="lastName" required>
+    </div>
+    <div class="form-group">
+      <label for="email">Email</label>
+      <input type="email" id="email" class="form-control" name="email" required>
+    </div>
+    <div class="form-group">
+      <label for="password">Password</label>
+      <input type="password" id="password" class="form-control" name="password" required>
+    </div>
+    <input type="submit" value="Sign Up" class="btn btn-primary">
+  </form>
+</div>
+</body>
+</html>

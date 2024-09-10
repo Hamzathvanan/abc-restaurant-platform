@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ABC Restaurant - Home</title>
+    <link rel="stylesheet" th:href="@{/webjars/bootstrap/css/bootstrap.min.css}">
+    <script th:src="@{/webjars/jquery/jquery.min.js}"></script>
+    <script th:src="@{/webjars/bootstrap/js/bootstrap.min.js}"></script>
+
+    <style>
+        .card {
+            height: 100%;
+        }
+        .card-img-top {
+            height: 200px;
+            object-fit: cover;
+        }
+        .card-body {
+            height: 150px;
+        }
+        .card-title {
+            height: 50px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <header class="mt-3">
+        <h1>Welcome to ABC Restaurant</h1>
+        <div>
+            <a href="#" th:href="@{/login}" class="btn btn-primary">Login</a>
+            <a href="#" th:href="@{/signup}" class="btn btn-secondary">Sign Up</a>
+        </div>
+    </header>
+
+    <hr>
+
+    <section>
+        <h2>Categories</h2>
+        <div class="row">
+            <div class="col-md-4" th:each="category : ${listCategories}">
+                <div class="card mb-4">
+                    <img class="card-img-top" th:src="@{${category.photosImagePath}}" alt="Category Image">
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${category.name}"></h5>
+                        <a th:href="@{'/customer/' + ${category.id}}" class="btn btn-primary">Explore</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section>
+        <h2>Products</h2>
+        <div class="row">
+            <div class="col-md-3" th:each="product : ${listProducts}">
+                <div class="card mb-4">
+                    <img class="card-img-top" th:src="@{${product.photosImagePath}}" alt="Product Image" style="height: 200px; object-fit: cover;">
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${product.name}"></h5>
+                        <p class="card-text">Price: $<span th:text="${product.price}"></span></p>
+                        <a th:href="@{'/products/' + ${product.id}}" class="btn btn-primary">Details</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+</div>
+</body>
+</html>

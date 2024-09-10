@@ -50,6 +50,12 @@ public class User {
         this.lastName = lastName;
     }
 
+    public User(String email, String password, Set<Role> roles) {
+        this.email = email;
+        this.password = password;
+        this.roles = roles;
+    }
+
     public void addRoles(Role role) {
         this.roles.add(role);
     }
