@@ -22,96 +22,129 @@ public class UserRepoTest {
     @Autowired
     private TestEntityManager entityManager;
 
+    // Test case to create a new user with one role
     @Test
-    public void testCreateNewUserWithOneRole() {
-        Role roleAdmin = entityManager.find(Role.class, 1);
-        User userNameHM = new User("ham@abc.net", "ham2024", "Hamzath", "vanan");
-        userNameHM.addRoles(roleAdmin);
+    public void testCreateUserWithOneRole() {
+        Role roleAdmin = entityManager.find(Role.class, 1); // Fetch existing Admin role
 
-        User savedUser = userRepo.save(userNameHM);
+        User userMike = new User("mike.jonehhs@gmail442.com", "mike2024", "Mike", "Jones");
+        userMike.addRoles(roleAdmin);
+
+        User savedUser = userRepo.save(userMike);
 
         assertThat(savedUser.getId()).isGreaterThan(0);
     }
 
+    // Test case to create a new user with multiple roles
     @Test
-    public void testCreateNewUserWithTwoRoles() {
-        User userRavi = new User("ravi@gmail.com", "ravi2024", "Ravi", "Kumar");
-        Role roleEditor = new Role(3);
-        Role roleAssistant = new Role(5);
+    public void testCreateUserWithMultipleRoles() {
+        Role roleEditor = entityManager.find(Role.class, 3); // Fetch Editor role
+        Role roleAssistant = entityManager.find(Role.class, 5); // Fetch Assistant role
 
-        userRavi.addRoles(roleEditor);
-        userRavi.addRoles(roleAssistant);
+        User userSara = new User("sara.jamgjges@gma22il44.com", "sara2024", "Sara", "James");
+        userSara.addRoles(roleEditor);
+        userSara.addRoles(roleAssistant);
 
-        User savedUser = userRepo.save(userRavi);
+        User savedUser = userRepo.save(userSara);
+
         assertThat(savedUser.getId()).isGreaterThan(0);
-
     }
 
+    // Test case to fetch all users and print to the console
     @Test
     public void testListAllUsers() {
-        Iterable<User> listUsers = userRepo.findAll();
-        listUsers.forEach(System.out::println);
+        Iterable<User> users = userRepo.findAll();
+        users.forEach(user -> System.out.println(user.toString()));
+        assertThat(users).hasSizeGreaterThan(0);
     }
 
+    // Test case to fetch a user by ID (assuming id starts from 1)
     @Test
     public void testGetUserById() {
-        User userHam = userRepo.findById(1).get();
-        System.out.println(userHam);
-        assertThat(userHam).isNotNull();
+        Integer userId = 13;
+        User user = userRepo.findById(userId).orElse(null);
+        assertThat(user).isNotNull();
     }
 
+    // Test case to update a user's email and active status
     @Test
     public void testUpdateUserDetails() {
-        User userHam = userRepo.findById(1).get();
-        userHam.setActive(true);
-        userHam.setEmail("hamzathvanan@gmail.com");
+        Integer userId = 5; // Assuming this user already exists
+        User user = userRepo.findById(userId).orElse(null);
+        assertThat(user).isNotNull();
 
-        userRepo.save(userHam);
+        user.setActive(true);
+        user.setEmail("newemail.john.doe@gmail.com");
+        userRepo.save(user);
+
+        User updatedUser = userRepo.findById(userId).orElse(null);
+        assertThat(updatedUser.getEmail()).isEqualTo("newemail.john.doe@gmail.com");
     }
 
+    // Test case to update user roles by removing and adding roles
     @Test
     public void testUpdateUserRoles() {
-        User userRavi = userRepo.findById(2).get();
-        Role roleEditor = new Role(3);
-        Role roleSalesperson = new Role(2);
+        Integer userId = 4; // Assuming this user exists
+        User user = userRepo.findById(userId).orElse(null);
+        assertThat(user).isNotNull();
 
-        userRavi.getRoles().remove(roleEditor);
-        userRavi.addRoles(roleSalesperson);
+        Role roleSalesperson = entityManager.find(Role.class, 2); // Fetch Salesperson role
+        Role roleAssistant = entityManager.find(Role.class, 5); // Fetch Assistant role
 
-        userRepo.save(userRavi);
+        user.getRoles().clear(); // Clear existing roles
+        user.addRoles(roleSalesperson); // Assign new roles
+        user.addRoles(roleAssistant);
+
+        userRepo.save(user);
+
+        User updatedUser = userRepo.findById(userId).orElse(null);
+        assertThat(updatedUser.getRoles()).hasSize(2); // Ensure two roles are assigned
     }
 
+    // Test case to delete a user by ID
     @Test
-    public void testDeleteUser() {
-        Integer userId = 2;
+    public void testDeleteUserById() {
+        Integer userId = 17; // Assuming this user exists
         userRepo.deleteById(userId);
+
+        User deletedUser = userRepo.findById(userId).orElse(null);
+        assertThat(deletedUser).isNull(); // Verify the user is deleted
     }
 
+    // Test case to find a user by their email address
     @Test
-    public void testGetUserByEmail() {
-        String email = "ravi@gmail.com";
+    public void testFindUserByEmail() {
+        String email = "sara.james@gmail.com";
         User user = userRepo.getUserByEmail(email);
 
         assertThat(user).isNotNull();
     }
 
+    // Test case to count the number of users by their ID
     @Test
-    public void testCountById() {
-        Integer id = 1;
-        Long countById = userRepo.countById(id);
-
-        assertThat(countById).isNotNull().isGreaterThan(0);
+    public void testCountUserById() {
+        Integer userId = 4;
+        Long countById = userRepo.countById(userId);
+        assertThat(countById).isGreaterThan(0);
     }
 
+    // Test case to disable a user (active = false)
     @Test
     public void testDisableUser() {
-        Integer id = 2;
-        userRepo.updateActiveStatus(id, false);
+        Integer userId = 5;
+        userRepo.updateActiveStatus(userId, false);
+
+        User user = userRepo.findById(userId).orElse(null);
+        assertThat(user.isActive()).isFalse(); // Verify the user is disabled
     }
 
+    // Test case to enable a user (active = true)
     @Test
     public void testEnableUser() {
-        Integer id = 3;
-        userRepo.updateActiveStatus(id, true);
+        Integer userId = 8; // Assuming this user exists
+        userRepo.updateActiveStatus(userId, true);
+
+        User user = userRepo.findById(userId).orElse(null);
+        assertThat(user.isActive()).isTrue(); // Verify the user is enabled
     }
 }
